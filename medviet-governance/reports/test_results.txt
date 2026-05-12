@@ -22,4 +22,4 @@ tests/test_pii.py::TestPIIDetection::test_detection_rate_above_95_percent PASSED
 tests/test_pii.py::TestAnonymization::test_pii_not_in_output PASSED      [ 93%]
 tests/test_pii.py::TestAnonymization::test_non_pii_columns_unchanged PASSED [100%]
 
-============================== 16 passed in 1.44s ==============================
+============================== 16 passed in 1.11s ==============================

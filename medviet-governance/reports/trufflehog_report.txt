@@ -1,0 +1,4 @@
+repo=/Users/AI_ThucChien/Day24-Track02-Lab-Assignment
+exit_code=0
+verified_secrets=0
+unverified_secrets=0

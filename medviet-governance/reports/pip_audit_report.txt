@@ -1,0 +1,2 @@
+repo=/Users/AI_ThucChien/Day24-Track02-Lab-Assignment
+status=blocked_by_environment

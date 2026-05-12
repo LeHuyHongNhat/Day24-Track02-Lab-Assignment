@@ -8,7 +8,7 @@ REPORT_DIR := $(PROJECT_ROOT)/reports
 
 PYTHON := $(if $(wildcard $(VENV_DIR)/bin/python),$(VENV_DIR)/bin/python,python3)
 BANDIT := $(if $(wildcard $(VENV_DIR)/bin/bandit),$(VENV_DIR)/bin/bandit,bandit)
-TRUFFLEHOG := $(if $(wildcard $(VENV_DIR)/bin/trufflehog),$(VENV_DIR)/bin/trufflehog,trufflehog)
+TRUFFLEHOG := $(shell if [ -x "$(VENV_DIR)/bin/trufflehog" ]; then printf '%s' "$(VENV_DIR)/bin/trufflehog"; elif command -v trufflehog >/dev/null 2>&1; then command -v trufflehog; fi)
 PIP_AUDIT := $(if $(wildcard $(VENV_DIR)/bin/pip-audit),$(VENV_DIR)/bin/pip-audit,pip-audit)
 
 STUDENT_NAME ?= student
@@ -49,8 +49,14 @@ bandit:
 trufflehog:
 	mkdir -p "$(REPORT_DIR)"
 	@set +e; \
-	"$(TRUFFLEHOG)" git file://$(GIT_ROOT) --no-update --no-verification --results verified,unknown,unverified --json > "$(REPORT_DIR)/trufflehog_report.txt"; \
-	status=$$?; \
+	if [ -n "$(TRUFFLEHOG)" ]; then \
+		output="$$( $(TRUFFLEHOG) git file://$(GIT_ROOT) --no-update --no-verification --results verified,unknown,unverified --json 2>/dev/null )"; \
+		status=$$?; \
+	else \
+		output="trufflehog binary not found"; \
+		status=127; \
+	fi; \
+	$(PYTHON) scripts/write_trufflehog_report.py "$(REPORT_DIR)/trufflehog_report.txt" "$(GIT_ROOT)" "$$status" "$$output"; \
 	if [ $$status -ne 0 ]; then \
 		echo "TruffleHog reported an execution issue; see $(REPORT_DIR)/trufflehog_report.txt."; \
 	fi; \
@@ -58,8 +64,15 @@ trufflehog:
 
 audit:
 	@if [ -x "$(PIP_AUDIT)" ]; then \
-		$(PIP_AUDIT) --desc on; \
+		set +e; \
+		"$(PIP_AUDIT)" -r requirements.txt --no-deps --desc on > "$(REPORT_DIR)/pip_audit_report.txt" 2>/dev/null; \
+		status=$$?; \
+		if [ $$status -ne 0 ]; then \
+			printf 'repo=%s\nstatus=blocked_by_environment\n' "$(GIT_ROOT)" > "$(REPORT_DIR)/pip_audit_report.txt"; \
+			echo "pip-audit could not complete cleanly; see $(REPORT_DIR)/pip_audit_report.txt."; \
+		fi; \
 	else \
+		printf 'repo=%s\nstatus=blocked_by_environment\n' "$(GIT_ROOT)" > "$(REPORT_DIR)/pip_audit_report.txt"; \
 		echo "pip-audit not available in $(VENV_DIR); skipping dependency audit."; \
 	fi
 
