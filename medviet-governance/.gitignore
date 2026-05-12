@@ -1,0 +1,12 @@
+data/raw/
+.vault_key
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+reports/*.tmp
+reports/*.log
+*.egg-info/
+dist/
+build/
+.venv/

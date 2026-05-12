@@ -334,6 +334,7 @@ class TestAnonymization:
 ```
 
 **Chạy test:**
+
 ```bash
 pytest tests/test_pii.py -v --tb=short
 ```
@@ -526,6 +527,7 @@ async def health():
 ```
 
 **Chạy và test:**
+
 ```bash
 uvicorn src.api.main:app --reload
 
@@ -676,6 +678,7 @@ class SimpleVault:
 ```
 
 **Test encryption:**
+
 ```python
 # Chạy trong Python shell
 from src.encryption.vault import SimpleVault
@@ -935,6 +938,7 @@ deny if {
 ```
 
 **Test OPA policy:**
+
 ```bash
 # Cài OPA
 brew install opa
@@ -1003,6 +1007,28 @@ Với mỗi row còn "⬜ Todo", mô tả technical solution cụ thể bạn s�
 | **Compliance Checklist** | 10đ | NĐ13 mapping đầy đủ, technical controls cụ thể |
 
 **Tổng: 100đ** — Pass: ≥ 70đ
+
+---
+
+## Quick Commands
+
+Nếu bạn muốn chạy nhanh bằng `make`, dùng các target trong `medviet-governance/Makefile`:
+
+```bash
+cd medviet-governance
+make data       # tạo lại data/raw/patients_raw.csv và data/processed/patients_anonymized.csv
+make test       # chạy pytest và ghi reports/test_results.txt
+make bandit     # chạy Bandit và ghi reports/bandit_report.json
+make trufflehog # scan git history và ghi reports/trufflehog_report.txt
+make report     # chạy test + security checks
+make package    # tạo lab24_submission_<ten_sv>.zip
+```
+
+Ghi chú:
+
+- `make security` chạy `bandit` + `trufflehog`.
+- `make audit` thử chạy `pip-audit` nếu binary có sẵn trong `.venv`.
+- `make clean` xóa các báo cáo và file zip đã tạo.
 
 ---
 

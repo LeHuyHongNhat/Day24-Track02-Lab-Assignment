@@ -1,0 +1,25 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Users/AI_ThucChien/Day24-Track02-Lab-Assignment/medviet-governance/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/AI_ThucChien/Day24-Track02-Lab-Assignment/medviet-governance
+plugins: anyio-4.12.1, Faker-37.12.0
+collecting ... collected 16 items
+
+tests/test_api.py::TestRBACApi::test_raw_patients_requires_token PASSED  [  6%]
+tests/test_api.py::TestRBACApi::test_raw_patients_rejects_invalid_token PASSED [ 12%]
+tests/test_api.py::TestRBACApi::test_raw_patients_denies_ml_engineer PASSED [ 18%]
+tests/test_api.py::TestRBACApi::test_raw_patients_allows_admin PASSED    [ 25%]
+tests/test_api.py::TestRBACApi::test_anonymized_patients_allows_ml_engineer PASSED [ 31%]
+tests/test_api.py::TestRBACApi::test_delete_patient_denies_ml_engineer PASSED [ 37%]
+tests/test_api.py::TestRBACApi::test_aggregated_metrics_allows_data_analyst PASSED [ 43%]
+tests/test_observability.py::test_resolve_route_metadata PASSED          [ 50%]
+tests/test_observability.py::test_record_audit_event_writes_json_line PASSED [ 56%]
+tests/test_observability.py::test_render_prometheus_metrics_reflects_events PASSED [ 62%]
+tests/test_pii.py::TestPIIDetection::test_cccd_detected PASSED           [ 68%]
+tests/test_pii.py::TestPIIDetection::test_phone_detected PASSED          [ 75%]
+tests/test_pii.py::TestPIIDetection::test_email_detected PASSED          [ 81%]
+tests/test_pii.py::TestPIIDetection::test_detection_rate_above_95_percent PASSED [ 87%]
+tests/test_pii.py::TestAnonymization::test_pii_not_in_output PASSED      [ 93%]
+tests/test_pii.py::TestAnonymization::test_non_pii_columns_unchanged PASSED [100%]
+
+============================== 16 passed in 1.44s ==============================

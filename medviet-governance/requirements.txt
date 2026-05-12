@@ -6,6 +6,9 @@ pandas>=2.0.0
 casbin>=1.17.0
 fastapi>=0.100.0
 uvicorn>=0.22.0
+# Pin urllib3 to 1.26.x because this lab environment uses LibreSSL with the
+# system Python, and urllib3 v2 drops support for non-OpenSSL TLS libraries.
+urllib3<2
 cryptography>=41.0.0
 great-expectations>=0.17.0
 pytest>=7.0.0

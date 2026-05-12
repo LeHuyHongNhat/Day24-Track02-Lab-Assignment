@@ -1,0 +1,29 @@
+groups:
+  - name: medviet-api-rules
+    rules:
+      - alert: High5xxRate
+        expr: rate(medviet_http_responses_total{status_code=~"5.."}[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High 5xx rate on MedViet API"
+          description: "The API is returning 5xx errors at a sustained rate."
+
+      - alert: High403Rate
+        expr: rate(medviet_http_responses_total{status_code="403"}[5m]) > 0.10
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High 403 rate on MedViet API"
+          description: "Access control is blocking a burst of requests."
+
+      - alert: UnauthorizedRawAccess
+        expr: increase(medviet_unauthorized_raw_access_total[5m]) > 0
+        for: 0m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Unauthorized raw patient access attempt"
+          description: "A non-admin role tried to access /api/patients/raw."
